@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/theme/app_spacing.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/auth_providers.dart';
+import 'features/auth/presentation/verify_email_screen.dart';
+import 'features/auth/presentation/welcome_screen.dart';
 
 class CampusSurvivalApp extends StatelessWidget {
   const CampusSurvivalApp({super.key});
@@ -12,55 +15,61 @@ class CampusSurvivalApp extends StatelessWidget {
       title: 'Campus Survival',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      home: const ThemeCheckScreen(),
+      home: const AuthGate(),
     );
   }
 }
 
-// ---------------------------------------------------------------
-// TEMPORARY. Exists only to prove the theme is applied.
-// We delete this class in Step 3 when the real dashboard arrives.
-// ---------------------------------------------------------------
-class ThemeCheckScreen extends StatelessWidget {
-  const ThemeCheckScreen({super.key});
+class AuthGate extends ConsumerWidget {
+  const AuthGate({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Campus Survival')),
-      body: ListView(
-        padding: const EdgeInsets.all(AppSpacing.screenH),
-        children: [
-          _swatch('primary', scheme.primary, scheme.onPrimary),
-          _swatch('primaryContainer', scheme.primaryContainer,
-              scheme.onPrimaryContainer),
-          _swatch('surfaceContainerLow', scheme.surfaceContainerLow,
-              scheme.onSurface),
-          _swatch('errorContainer', scheme.errorContainer,
-              scheme.onErrorContainer),
-          const SizedBox(height: AppSpacing.section),
-          const Card(
-            child: Padding(
-              padding: EdgeInsets.all(AppSpacing.cardPad),
-              child: Text('This Card uses cardTheme — no shadow, radius 12.'),
-            ),
-          ),
-        ],
+    return authState.when(
+      data: (user) {
+        if (user == null) return const WelcomeScreen();
+        if (!user.emailVerified) {
+          return VerifyEmailScreen(email: user.email);
+        }
+        return const TempHomeScreen();
+      },
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => const Scaffold(
+        body: Center(child: Text('Something went wrong.')),
       ),
     );
   }
+}
 
-  Widget _swatch(String name, Color background, Color foreground) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.cardGap),
-      padding: const EdgeInsets.all(AppSpacing.cardPad),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(AppRadius.card),
+// TEMPORARY — replaced by the real dashboard in Step 6.
+class TempHomeScreen extends ConsumerWidget {
+  const TempHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).value;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Campus Survival')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(user?.displayName ?? ''),
+            Text(user?.email ?? ''),
+            const SizedBox(height: 24),
+            FilledButton(
+              onPressed: () =>
+                  ref.read(authRepositoryProvider).signOut(),
+              child: const Text('Sign out'),
+            ),
+          ],
+        ),
       ),
-      child: Text(name, style: TextStyle(color: foreground)),
     );
   }
 }

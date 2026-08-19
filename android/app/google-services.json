@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "13888766906",
+    "project_id": "campus-survival-4b3f6",
+    "storage_bucket": "campus-survival-4b3f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13888766906:android:b6b9fde7928aa0f2355383",
+        "android_client_info": {
+          "package_name": "com.example.campus_survival"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVO25bmOceiEsN38JzRnhgevRRmS7aZKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

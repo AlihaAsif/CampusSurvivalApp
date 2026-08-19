@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'app_typography.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 
@@ -11,6 +11,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: lightScheme,
       scaffoldBackgroundColor: lightScheme.surface,
+      textTheme: AppTypography.textTheme,
 
       appBarTheme: AppBarTheme(
         backgroundColor: lightScheme.surface,
