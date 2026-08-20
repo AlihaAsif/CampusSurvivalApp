@@ -14,6 +14,7 @@ class AuthField extends StatelessWidget {
     this.validator,
     this.suffix,
     this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   final TextEditingController controller;
@@ -24,16 +25,18 @@ class AuthField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Widget? suffix;
   final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: obscure,
-      keyboardType: keyboardType,
-      validator: validator,
-      textInputAction: textInputAction,
-      style: const TextStyle(fontSize: 14.5),
+    controller: controller,
+    obscureText: obscure,
+    keyboardType: keyboardType,
+    validator: validator,
+    textInputAction: textInputAction,
+    textCapitalization: textCapitalization,
+    style: const TextStyle(fontSize: 14.5),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(
@@ -52,11 +55,17 @@ class AuthField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        errorStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 12.5,
+        ),
+        errorMaxLines: 2,
         border: _border(Colors.transparent),
         enabledBorder: _border(Colors.transparent),
         focusedBorder: _border(BrandColors.orange, width: 2.0),
-        errorBorder: _border(const Color(0xFFBA1A1A)),
-        focusedErrorBorder: _border(const Color(0xFFBA1A1A), width: 1.4),
+        errorBorder: _border(Colors.white.withValues(alpha: 0.8), width: 1.5),
+        focusedErrorBorder: _border(Colors.white, width: 2.0),
       ),
     );
   }

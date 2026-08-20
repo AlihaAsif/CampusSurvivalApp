@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../profile/domain/user_profile.dart';
+import '../../profile/presentation/profile_providers.dart';
 
 import 'auth_providers.dart';
 
@@ -23,10 +25,20 @@ class AuthController extends AsyncNotifier<void> {
       ) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoryProvider).signUp(
+      final user = await ref.read(authRepositoryProvider).signUp(
         email: email,
         password: password,
         displayName: name,
+      );
+      
+      await ref.read(profileRepositoryProvider).saveProfile(
+        UserProfile(
+          uid: user.uid,
+          name: name.trim(),
+          rollNumber: '',
+          semester: 0,
+          section: '',
+        ),
       );
     });
   }

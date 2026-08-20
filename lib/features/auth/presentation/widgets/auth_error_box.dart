@@ -12,24 +12,32 @@ class AuthErrorBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFDAD6),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.card),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
         children: [
           const Icon(
             Icons.error_outline,
-            size: 18,
-            color: Color(0xFF410002),
+            size: 20,
+            color: Color(0xFFD93025),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
               message,
               style: const TextStyle(
-                fontSize: 12.5,
-                height: 1.4,
-                color: Color(0xFF410002),
+                fontSize: 13,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFFB3261E),
               ),
             ),
           ),
