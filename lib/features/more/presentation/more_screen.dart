@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../attendance/presentation/attendance_screen.dart';
 import '../../../core/navigation/placeholder_screen.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../auth/presentation/auth_providers.dart';
@@ -10,10 +10,13 @@ class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
 
   void _open(BuildContext context, String title) {
+    final Widget screen = switch (title) {
+      'Attendance' => const AttendanceScreen(),
+      _ => PlaceholderScreen(title: title),
+    };
+
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => PlaceholderScreen(title: title),
-      ),
+      MaterialPageRoute(builder: (_) => screen),
     );
   }
 

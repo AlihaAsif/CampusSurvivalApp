@@ -4,6 +4,7 @@ import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/more/presentation/more_screen.dart';
 import 'placeholder_screen.dart';
 import '../../features/assignments/presentation/assignments_screen.dart';
+import '../../features/expenses/presentation/expenses_screen.dart';
 
 
 class AppShell extends StatefulWidget {
@@ -20,7 +21,7 @@ class _AppShellState extends State<AppShell> {
     DashboardScreen(),
     TimetableScreen(),
     AssignmentsScreen(),
-    PlaceholderScreen(title: 'Expenses'),
+    ExpensesScreen(),
     MoreScreen(),
   ];
 
