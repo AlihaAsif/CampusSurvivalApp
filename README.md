@@ -1,121 +1,244 @@
 # Campus Survival
 
-An all-in-one companion app for university students in Pakistan. Ten features, one question running through all of them: **how much room do I have left?** How many classes can I still miss, how many days until this is due, how many rupees are left this month.
+A simple **all-in-one companion app for university students in Pakistan**.
 
-Built with Flutter, Riverpod and Firebase, following Clean Architecture.
+Campus Survival helps students keep track of their **classes, attendance, assignments, expenses, study time, campus announcements and important locations** — all in one place.
+
+Built with **Flutter, Riverpod and Firebase** using **Clean Architecture**.
 
 ---
 
 ## Features
 
-| Feature | What it does |
-|---|---|
-| **Smart Dashboard** | Next class with a live countdown, today's schedule, deadlines, attendance and budget at a glance |
-| **Smart Timetable** | Manual entry plus import from a PDF or a photo of the department timetable |
-| **Assignments** | Deadlines with calendar-accurate due badges, priorities and filters |
-| **Attendance Tracker** | Percentage per subject, safe-skip count, recovery target, class-by-class register |
-| **Expense Tracker** | Monthly budget, daily allowance, category donut and a seven-day bar chart |
-| **Study Planner** | Weekly hour goals per subject, planned sessions and a daily streak |
-| **Announcements** | Campus notices with per-student read state and an unread badge |
-| **Lost & Found** | Photo posts with author-only editing |
-| **Campus Map** | Buildings pinned on OpenStreetMap, searchable, directions handed off to Google Maps |
-| **AI Assistant** | Gemini chat that answers using the student's own timetable, attendance and spending |
+| Feature                | What it does                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------ |
+| **Smart Dashboard**    | Shows your next class, countdown, today's schedule, deadlines, attendance and budget       |
+| **Smart Timetable**    | Add classes manually or import a timetable from a PDF or photo                             |
+| **Assignments**        | Add assignments, set deadlines, priorities and filter them                                 |
+| **Attendance Tracker** | Track attendance for each subject and see how many classes you can safely miss             |
+| **Expense Tracker**    | Set a monthly budget and track daily expenses by category                                  |
+| **Study Planner**      | Set weekly study goals, plan study sessions and maintain a daily streak                    |
+| **Announcements**      | View campus announcements and track which ones you have read                               |
+| **Lost & Found**       | Post lost or found items with photos                                                       |
+| **Campus Map**         | Find important campus buildings using OpenStreetMap and get directions through Google Maps |
+| **AI Assistant**       | Chat with Gemini and get answers based on your timetable, attendance and expenses          |
 
 ---
 
-## Tech stack
+## Tech Stack
 
-- **Flutter** (Material 3) + **Riverpod** — `StreamProvider` over Firestore, derived providers for everything computed
-- **Firebase** — Auth (email/password with verification) and Cloud Firestore
-- **Supabase Storage** — images for Lost & Found
-- **ML Kit** + **Syncfusion PDF** — on-device timetable reading
-- **flutter_map** + OpenStreetMap — campus map, no billing account needed
-- **fl_chart** — expense charts
-- **Gemini** — AI assistant
+* **Flutter** — Mobile app development
+* **Riverpod** — State management
+* **Firebase Authentication** — User login and registration
+* **Cloud Firestore** — Store user and campus data
+* **Supabase Storage** — Store Lost & Found images
+* **ML Kit** — Read timetable information from photos
+* **Syncfusion PDF** — Extract text from PDF timetables
+* **flutter_map + OpenStreetMap** — Campus map
+* **fl_chart** — Expense charts
+* **Gemini AI** — AI Assistant
 
 ---
 
-## Architecture
+## Project Architecture
 
-Every feature is split three ways:
+The project follows **Clean Architecture**.
 
-```
+Each feature is divided into three parts:
+
+```text
 lib/features/<feature>/
-├── domain/          plain Dart — models and an abstract repository
-├── data/            the implementation (Firestore, Supabase, ML Kit)
-└── presentation/    screens and Riverpod providers
+├── domain/
+│   ├── models
+│   └── repositories
+│
+├── data/
+│   └── repository implementations
+│
+└── presentation/
+    ├── screens
+    └── providers
 ```
 
-The rule that holds it together: **`domain/` imports nothing.** Not Flutter, not Firebase. The attendance formula is arithmetic — it has no business knowing where the data came from, which makes it testable in milliseconds and the backend swappable.
+### Why this structure?
 
-Screens depend on the abstract `AuthRepository`, never on `FirebaseAuthRepository`.
+* **Domain** contains the main business logic.
+* **Data** handles Firebase, Supabase and other external services.
+* **Presentation** contains the UI and Riverpod providers.
 
----
-
-## A few decisions worth explaining
-
-**Nothing computed is ever stored.** Attendance percentages, monthly totals, unread counts, study hours — all derived from the base collections on every read. A stored total drifts out of sync with the records it summarises; a derived one cannot.
-
-**Money is `int`, never `double`.** Rupee amounts have no fractional part, and floats will eventually produce `Rs 16,429.999999` in a total somewhere.
-
-**Time of day is minutes from midnight.** `08:30` is stored as `510` — sorting is an integer compare, duration is subtraction, and no timezone enters the picture.
-
-**Due dates compare calendar days, not elapsed hours.** An assignment due at 11:59 PM tonight reads "Due today", not "in 4 hours". Without stripping the time first, something due tomorrow morning shows as due today.
-
-**One ticker, not one per widget.** A single 30-second stream drives the countdown, the "Now" badge and the live class highlight. Per-second rebuilds of the whole dashboard are wasteful and nobody can tell the difference.
-
-**PDFs are read, photos are OCR'd.** A digital PDF already holds its text — rasterising it and running OCR over the image only adds mistakes. Photos have no text layer, so those go through ML Kit, with the recognised blocks re-clustered by bounding box so a table row lands on one line.
-
-**The timetable import review step is not optional.** Parsing is never perfect, and a silently wrong timetable corrupts attendance and dashboard data downstream. Nothing is written until the student confirms what was detected.
+This keeps the code organized and makes it easier to **test, maintain and update** the app.
 
 ---
 
-## Getting started
+## Important Design Decisions
 
-**Prerequisites:** Flutter 3.22+, a Firebase project, a Supabase project, and a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+### 1. Calculated data is not stored
+
+Things like:
+
+* Attendance percentage
+* Monthly expenses
+* Unread announcements
+* Study hours
+
+are calculated from the original data instead of being stored separately.
+
+This prevents totals from becoming incorrect when the original records change.
+
+### 2. Money is stored as integers
+
+Expenses are stored as `int` values because Pakistani rupee amounts normally don't need decimal values.
+
+For example:
+
+```text
+16429
+```
+
+instead of:
+
+```text
+16429.999999
+```
+
+### 3. Time is stored as minutes
+
+Instead of storing `08:30` as a string, it is stored as:
+
+```text
+510 minutes
+```
+
+This makes sorting and calculating class durations easier.
+
+### 4. Due dates use calendar days
+
+The app checks the **date**, not the exact number of hours remaining.
+
+For example, an assignment due tonight shows:
+
+```text
+Due today
+```
+
+instead of:
+
+```text
+Due in 4 hours
+```
+
+### 5. One timer for the dashboard
+
+A single timer updates the dashboard countdown and class status instead of creating separate timers for every widget.
+
+### 6. PDF and photo timetables are handled differently
+
+* **PDF:** Text is extracted directly from the PDF.
+* **Photo:** ML Kit is used to recognize the text.
+
+The detected timetable is shown to the student for **review and confirmation before saving**.
+
+This is important because automatic timetable detection may not always be perfect.
+
+---
+
+## Campus Map
+
+The campus map uses **OpenStreetMap** through `flutter_map`.
+
+OpenStreetMap provides the map data, but it does not automatically know where every university building is located.
+
+Therefore, important campus places such as:
+
+* CS Department
+* Library
+* Cafeteria
+* Administration Block
+* Labs
+
+are added manually with their coordinates.
+
+The coordinates are stored in:
+
+```text
+lib/features/map/data/campus_places.dart
+```
+
+Students can search for a building and then open directions in Google Maps.
+
+---
+
+## Getting Started
+
+### Requirements
+
+Before running the project, you need:
+
+* Flutter 3.22+
+* Firebase project
+* Supabase project
+* Gemini API key
+
+### Installation
+
+Clone the repository:
 
 ```bash
-git clone https://github.com/<you>/campus-survival.git
-cd campus-survival
+git clone https://github.com/AlihaAsif/CampusSurvivalApp.git
+cd CampusSurvivalApp
 flutter pub get
 ```
 
-**Firebase** — enable Auth (Email/Password) and Firestore, then:
+### Firebase
+
+Enable:
+
+* Firebase Authentication
+* Email/Password authentication
+* Cloud Firestore
+
+Then configure Firebase:
 
 ```bash
 dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
-Firestore rules: users read and write only under their own `users/{uid}`; `announcements` are read-only; `lostItems` are writable only by their author.
+### Supabase
 
-**Supabase** — create a public bucket named `lost-items` with `SELECT` and `INSERT` policies on `bucket_id = 'lost-items'`.
+Create a storage bucket named:
 
-**Config** — copy the examples and fill in your own values (both are gitignored):
-
-```bash
-cp lib/core/config/supabase_config.example.dart lib/core/config/supabase_config.dart
-cp lib/core/config/gemini_config.example.dart lib/core/config/gemini_config.dart
+```text
+lost-items
 ```
 
-**Android** — set `compileSdk = 36` and `minSdk = 23` in `android/app/build.gradle.kts`.
+and configure the required storage policies.
+
+### Gemini
+
+Create a Gemini API key and add it to the project's configuration file.
+
+### Run the App
 
 ```bash
 flutter run
 ```
 
-Building coordinates are hand-entered in `lib/features/map/data/campus_places.dart` — no public API knows where your university's library is. Right-click any building in Google Maps to copy its coordinates.
+---
+
+## Known Limitations
+
+* Timetable import works best when there is **one class per line**.
+* The Gemini API key is currently stored in the client, which is acceptable for a portfolio project but should be moved to a backend for a production app.
+* AI chat history is currently stored only in memory.
+* The app is currently designed for **one university campus**.
+* Campus buildings and locations are manually added.
+* The attendance requirement is currently based on a **75% requirement**.
 
 ---
 
-## Known limitations
+## License
 
-- **Timetable import expects one class per line.** Grid-style sheets carrying every section of the campus lose their row structure when text is extracted, so the parser cannot tell which subject belongs to which section.
-- **The Gemini key ships in the client.** Fine for a portfolio build; a published app would move the call behind a Cloud Function.
-- **Chat history is in-memory** and resets when the assistant closes.
-- **Single campus** — places, sections and the 75% attendance requirement are built around one university.
+This project is created as a portfolio project.
 
----
-
-Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
-
+Map data © OpenStreetMap contributors.
