@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../features/timetable/presentation/timetable_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/more/presentation/more_screen.dart';
-import 'placeholder_screen.dart';
 import '../../features/assignments/presentation/assignments_screen.dart';
 import '../../features/expenses/presentation/expenses_screen.dart';
 

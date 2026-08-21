@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../domain/budget_math.dart';
 import '../domain/expense.dart';
@@ -68,7 +69,7 @@ class ExpensesScreen extends ConsumerWidget {
             children: [
               // ---------- Summary ----------
               Card(
-                color: scheme.surfaceContainer,
+                color: BrandColors.navy,
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.cardPad),
                   child: Column(
@@ -77,12 +78,15 @@ class ExpensesScreen extends ConsumerWidget {
                       Text(
                         'Spent this month',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
+                          color: Colors.white.withValues(alpha: 0.8),
                         ),
                       ),
                       Text(
                         BudgetMath.formatPkr(total),
-                        style: theme.textTheme.headlineSmall,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       ClipRRect(
@@ -90,8 +94,8 @@ class ExpensesScreen extends ConsumerWidget {
                         child: LinearProgressIndicator(
                           value: (total / budget).clamp(0.0, 1.0),
                           minHeight: 6,
-                          color: left < 0 ? scheme.error : scheme.primary,
-                          backgroundColor: scheme.surfaceContainerHighest,
+                          color: left < 0 ? scheme.error : BrandColors.orange,
+                          backgroundColor: Colors.white.withValues(alpha: 0.2),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),
@@ -103,13 +107,13 @@ class ExpensesScreen extends ConsumerWidget {
                                 ? '${BudgetMath.formatPkr(left)} left'
                                 : '${BudgetMath.formatPkr(-left)} over',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurfaceVariant,
+                              color: Colors.white.withValues(alpha: 0.8),
                             ),
                           ),
                           Text(
                             'Budget ${BudgetMath.formatPkr(budget)}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurfaceVariant,
+                              color: Colors.white.withValues(alpha: 0.8),
                             ),
                           ),
                         ],
@@ -119,7 +123,7 @@ class ExpensesScreen extends ConsumerWidget {
                         padding: const EdgeInsets.all(AppSpacing.md),
                         decoration: BoxDecoration(
                           color: left > 0
-                              ? const Color(0xFFB4F1CD)
+                              ? Colors.white.withValues(alpha: 0.15)
                               : scheme.errorContainer,
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -135,7 +139,7 @@ class ExpensesScreen extends ConsumerWidget {
                               '${daysLeft == 1 ? '' : 's'} to go.',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: left > 0
-                                ? const Color(0xFF00210F)
+                                ? Colors.white
                                 : scheme.onErrorContainer,
                             height: 1.45,
                           ),
@@ -426,7 +430,7 @@ class _WeeklyBars extends StatelessWidget {
               BarChartRodData(
                 toY: item.amount.toDouble(),
                 width: 20,
-                color: isMax ? scheme.primary : scheme.primaryContainer,
+                color: isMax ? BrandColors.orange : BrandColors.navy.withValues(alpha: 0.2),
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(6),
                   bottom: Radius.circular(2),

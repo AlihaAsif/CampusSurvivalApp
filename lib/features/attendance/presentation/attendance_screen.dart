@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import 'attendance_providers.dart';
 import 'mark_attendance_sheet.dart';
@@ -41,7 +42,8 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
               child: Text(
                 '75% required',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: scheme.onSurfaceVariant,
+                  color: BrandColors.orange,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -60,7 +62,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
         children: [
           // ---------- Overall ----------
           Card(
-            color: scheme.surfaceContainer,
+            color: BrandColors.navy,
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.cardPad),
               child: Column(
@@ -72,7 +74,10 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                     children: [
                       Text(
                         '${(overall.percent * 100).toStringAsFixed(1)}%',
-                        style: theme.textTheme.headlineSmall,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(width: AppSpacing.sm),
                       Expanded(
@@ -80,7 +85,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                           'overall · ${overall.attended} of '
                               '${overall.held} classes',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
+                            color: Colors.white.withValues(alpha: 0.8),
                           ),
                         ),
                       ),
@@ -89,14 +94,14 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                   const SizedBox(height: AppSpacing.md),
                   ThresholdBar(
                     value: overall.percent,
-                    color: scheme.primary,
+                    color: BrandColors.orange,
                     threshold: 0.75,
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     'The marker shows the 75% requirement.',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
+                      color: Colors.white.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -107,7 +112,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
           if (unmarked.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.cardGap),
             Card(
-              color: scheme.primaryContainer,
+              color: BrandColors.orange,
               child: InkWell(
                 borderRadius: BorderRadius.circular(AppRadius.card),
                 onTap: _openSheet,
@@ -115,9 +120,9 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                   padding: const EdgeInsets.all(AppSpacing.cardPad),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.how_to_reg_outlined,
-                        color: scheme.onPrimaryContainer,
+                        color: Colors.white,
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
@@ -126,13 +131,14 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                               '${unmarked.length == 1 ? '' : 'es'} '
                               'not marked today',
                           style: theme.textTheme.bodyLarge?.copyWith(
-                            color: scheme.onPrimaryContainer,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.chevron_right,
-                        color: scheme.onPrimaryContainer,
+                        color: Colors.white,
                       ),
                     ],
                   ),

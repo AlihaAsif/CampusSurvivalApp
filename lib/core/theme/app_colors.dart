@@ -3,41 +3,39 @@ import 'package:flutter/material.dart';
 const ColorScheme lightScheme = ColorScheme(
   brightness: Brightness.light,
 
-
-  primary: Color(0xFF3D5AA9),
+  // Primary: Brand Navy Blue
+  primary: Color(0xFF1E2E5C),
   onPrimary: Color(0xFFFFFFFF),
-  primaryContainer: Color(0xFFDBE1FF),
-  onPrimaryContainer: Color(0xFF0B1B4E),
+  primaryContainer: Color(0xFFE8EEF9),
+  onPrimaryContainer: Color(0xFF0D1838),
 
-
-  secondary: Color(0xFF585E71),
+  // Secondary: Brand Orange
+  secondary: Color(0xFFF2691E),
   onSecondary: Color(0xFFFFFFFF),
-  secondaryContainer: Color(0xFFDDE1F9),
-  onSecondaryContainer: Color(0xFF161B2C),
+  secondaryContainer: Color(0xFFFFF0EB),
+  onSecondaryContainer: Color(0xFF5A2000),
 
-
-  tertiary: Color(0xFF725572),
+  // Tertiary: Brand Accent Blue
+  tertiary: Color(0xFF3D5AA9),
   onTertiary: Color(0xFFFFFFFF),
-  tertiaryContainer: Color(0xFFFDD7FA),
-  onTertiaryContainer: Color(0xFF2A122B),
-
+  tertiaryContainer: Color(0xFFE0E7FF),
+  onTertiaryContainer: Color(0xFF111E48),
 
   error: Color(0xFFBA1A1A),
   onError: Color(0xFFFFFFFF),
   errorContainer: Color(0xFFFFDAD6),
   onErrorContainer: Color(0xFF410002),
 
-
-  surface: Color(0xFFFBF8FF),
-  onSurface: Color(0xFF1A1B21),
-  onSurfaceVariant: Color(0xFF45464F),
-  outline: Color(0xFF767680),
-  outlineVariant: Color(0xFFC6C5D0),
+  surface: Color(0xFFFAFAFD),
+  onSurface: Color(0xFF1A1C22),
+  onSurfaceVariant: Color(0xFF444752),
+  outline: Color(0xFF757782),
+  outlineVariant: Color(0xFFC5C6D0),
   surfaceContainerLowest: Color(0xFFFFFFFF),
-  surfaceContainerLow: Color(0xFFF5F2FA),
-  surfaceContainer: Color(0xFFEFEDF5),
-  surfaceContainerHigh: Color(0xFFE9E7EF),
-  surfaceContainerHighest: Color(0xFFE3E1E9),
+  surfaceContainerLow: Color(0xFFF3F4F8),
+  surfaceContainer: Color(0xFFECEEF4),
+  surfaceContainerHigh: Color(0xFFE4E7F0),
+  surfaceContainerHighest: Color(0xFFDCDFE8),
 );
 
 /// Brand colours taken from the app logo.
@@ -46,8 +44,6 @@ class BrandColors {
 
   static const Color orange = Color(0xFFF2691E);
   static const Color navy = Color(0xFF1E2E5C);
-
-  /// Same as the app's primary — used for links inside auth cards.
   static const Color blue = Color(0xFF3D5AA9);
 
   static const Color fieldFill = Color(0xFFF2F2F5);

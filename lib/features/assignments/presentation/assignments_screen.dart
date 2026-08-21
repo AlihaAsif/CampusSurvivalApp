@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../timetable/domain/subject.dart';
 import '../../timetable/presentation/timetable_providers.dart';
@@ -15,7 +16,6 @@ class AssignmentsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
 
     final assignmentsAsync = ref.watch(assignmentsProvider);
     final list = ref.watch(filteredAssignmentsProvider);
@@ -46,7 +46,7 @@ class AssignmentsScreen extends ConsumerWidget {
                   0,
                 ),
                 child: Card(
-                  color: scheme.surfaceContainer,
+                  color: BrandColors.navy,
                   child: Padding(
                     padding: const EdgeInsets.all(AppSpacing.cardPad),
                     child: Column(
@@ -60,12 +60,15 @@ class AssignmentsScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '${counts.done} of ${counts.total} submitted',
-                              style: theme.textTheme.bodyLarge,
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               '${counts.total - counts.done} open',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: scheme.onSurfaceVariant,
+                                color: Colors.white.withValues(alpha: 0.8),
                               ),
                             ),
                           ],
@@ -78,8 +81,8 @@ class AssignmentsScreen extends ConsumerWidget {
                                 ? 0
                                 : counts.done / counts.total,
                             minHeight: 6,
-                            backgroundColor:
-                            scheme.surfaceContainerHighest,
+                            color: BrandColors.orange,
+                            backgroundColor: Colors.white.withValues(alpha: 0.2),
                           ),
                         ),
                       ],
@@ -102,9 +105,23 @@ class AssignmentsScreen extends ConsumerWidget {
                   const SizedBox(width: AppSpacing.sm),
                   itemBuilder: (context, index) {
                     final value = AssignmentFilter.values[index];
+                    final isSelected = filter == value;
                     return ChoiceChip(
-                      label: Text(_filterLabel(value)),
-                      selected: filter == value,
+                      selectedColor: BrandColors.orange,
+                      backgroundColor: BrandColors.fieldFill,
+                      side: BorderSide(
+                        color: isSelected
+                            ? BrandColors.orange
+                            : BrandColors.navy.withValues(alpha: 0.15),
+                      ),
+                      label: Text(
+                        _filterLabel(value),
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : BrandColors.navy,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                        ),
+                      ),
+                      selected: isSelected,
                       onSelected: (_) {
                         ref
                             .read(assignmentFilterProvider.notifier)
@@ -228,7 +245,7 @@ class _AssignmentCard extends ConsumerWidget {
                   margin: const EdgeInsets.only(top: 2),
                   decoration: BoxDecoration(
                     color: assignment.done
-                        ? scheme.primary
+                        ? BrandColors.orange
                         : Colors.transparent,
                     border: assignment.done
                         ? null

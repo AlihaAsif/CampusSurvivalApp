@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../study/presentation/study_screen.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_spacing.dart';
 import '../../attendance/presentation/attendance_screen.dart';
 import '../../../core/navigation/placeholder_screen.dart';
-import '../../../core/theme/app_spacing.dart';
 import '../../auth/presentation/auth_providers.dart';
 import '../../profile/presentation/profile_providers.dart';
+import '../../announcements/presentation/announcement_providers.dart';
+import '../../announcements/presentation/announcements_screen.dart';
+import '../../lost_found/presentation/lost_found_screen.dart';
+import '../../map/presentation/campus_map_screen.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -12,6 +18,10 @@ class MoreScreen extends ConsumerWidget {
   void _open(BuildContext context, String title) {
     final Widget screen = switch (title) {
       'Attendance' => const AttendanceScreen(),
+      'Study Planner' => const StudyScreen(),
+      'Announcements' => const AnnouncementsScreen(),
+      'Lost & Found' => const LostFoundScreen(),
+      'Campus Map' => const CampusMapScreen(),
       _ => PlaceholderScreen(title: title),
     };
 
@@ -25,25 +35,28 @@ class MoreScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final profile = ref.watch(profileProvider).value;
+    final unread = ref.watch(unreadCountProvider);
 
     final features = [
       _Feature(
         title: 'Attendance',
         subtitle: 'See how many classes you can still miss',
         icon: Icons.pie_chart_outline,
-        background: scheme.primaryContainer,
-        foreground: scheme.onPrimaryContainer,
+        background: BrandColors.orange.withValues(alpha: 0.15),
+        foreground: BrandColors.orange,
       ),
       _Feature(
         title: 'Study Planner',
         subtitle: 'Weekly hours and planned sessions',
         icon: Icons.menu_book_outlined,
-        background: scheme.secondaryContainer,
-        foreground: scheme.onSecondaryContainer,
+        background: BrandColors.navy.withValues(alpha: 0.12),
+        foreground: BrandColors.navy,
       ),
       _Feature(
         title: 'Announcements',
-        subtitle: 'All campus notices in one place',
+        subtitle: unread > 0
+            ? '$unread unread notice${unread == 1 ? '' : 's'}'
+            : 'All campus notices in one place',
         icon: Icons.campaign_outlined,
         background: scheme.tertiaryContainer,
         foreground: scheme.onTertiaryContainer,
@@ -52,22 +65,22 @@ class MoreScreen extends ConsumerWidget {
         title: 'Lost & Found',
         subtitle: 'Report or claim items around campus',
         icon: Icons.search_outlined,
-        background: scheme.primaryContainer,
-        foreground: scheme.onPrimaryContainer,
+        background: BrandColors.orange.withValues(alpha: 0.15),
+        foreground: BrandColors.orange,
       ),
       _Feature(
         title: 'Campus Map',
         subtitle: 'Find buildings and get directions',
         icon: Icons.map_outlined,
-        background: scheme.secondaryContainer,
-        foreground: scheme.onSecondaryContainer,
+        background: BrandColors.navy.withValues(alpha: 0.12),
+        foreground: BrandColors.navy,
       ),
       _Feature(
         title: 'AI Assistant',
         subtitle: 'Ask anything about campus',
         icon: Icons.auto_awesome_outlined,
-        background: scheme.tertiaryContainer,
-        foreground: scheme.onTertiaryContainer,
+        background: BrandColors.blue.withValues(alpha: 0.12),
+        foreground: BrandColors.blue,
       ),
     ];
 
@@ -81,17 +94,19 @@ class MoreScreen extends ConsumerWidget {
         children: [
 
           Card(
+            color: BrandColors.navy,
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Row(
                 children: [
                   CircleAvatar(
-                    radius: 24,
-                    backgroundColor: scheme.primary,
+                    radius: 26,
+                    backgroundColor: BrandColors.orange,
                     child: Text(
                       (profile?.name ?? '?').characters.first.toUpperCase(),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: scheme.onPrimary,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -102,7 +117,10 @@ class MoreScreen extends ConsumerWidget {
                       children: [
                         Text(
                           profile?.name ?? '',
-                          style: theme.textTheme.titleMedium,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -110,7 +128,7 @@ class MoreScreen extends ConsumerWidget {
                               'Semester ${profile?.semester ?? ''} · '
                               'Section ${profile?.section ?? ''}',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
+                            color: Colors.white.withValues(alpha: 0.8),
                           ),
                         ),
                       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../domain/class_slot.dart';
 import '../domain/subject.dart';
@@ -70,8 +71,22 @@ class _TimetableScreenState extends ConsumerState<TimetableScreen> {
                 final isToday = DateTime.now().weekday == weekday;
 
                 return ChoiceChip(
+                  selectedColor: BrandColors.orange,
+                  backgroundColor: BrandColors.fieldFill,
+                  side: BorderSide(
+                    color: _selectedDay == weekday
+                        ? BrandColors.orange
+                        : BrandColors.navy.withValues(alpha: 0.15),
+                  ),
                   label: Text(
                     isToday ? '${_dayLabels[index]} ·' : _dayLabels[index],
+                    style: TextStyle(
+                      color: _selectedDay == weekday
+                          ? Colors.white
+                          : BrandColors.navy,
+                      fontWeight:
+                      _selectedDay == weekday ? FontWeight.bold : FontWeight.w500,
+                    ),
                   ),
                   selected: _selectedDay == weekday,
                   onSelected: (_) =>
