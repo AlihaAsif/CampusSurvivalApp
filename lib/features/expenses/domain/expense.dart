@@ -9,10 +9,10 @@ extension ExpenseCategoryX on ExpenseCategory {
   };
 
   int get colorValue => switch (this) {
-    ExpenseCategory.food => 0xFF3D5AA9,
-    ExpenseCategory.transport => 0xFF1F6683,
-    ExpenseCategory.books => 0xFF8A5300,
-    ExpenseCategory.misc => 0xFF725572,
+    ExpenseCategory.food => 0xFFF2691E, // Brand Orange
+    ExpenseCategory.transport => 0xFF1E2E5C, // Brand Navy
+    ExpenseCategory.books => 0xFF3D5AA9, // Accent Blue
+    ExpenseCategory.misc => 0xFFFA874A, // Soft Orange
   };
 }
 

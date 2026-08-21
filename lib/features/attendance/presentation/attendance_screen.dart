@@ -173,9 +173,9 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
               verdict =
               'Attend ${item.recoveryNeeded} in a row to recover';
             } else if (item.safeSkips == 0) {
-              statusColor = const Color(0xFF8A5300);
-              statusBg = const Color(0xFFFFDDB3);
-              statusFg = const Color(0xFF2B1700);
+              statusColor = BrandColors.orange;
+              statusBg = scheme.secondaryContainer;
+              statusFg = scheme.onSecondaryContainer;
               statusLabel = 'Cutting it close';
               verdict = 'No classes left to spare';
             } else {

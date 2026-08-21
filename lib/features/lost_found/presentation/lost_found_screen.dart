@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_spacing.dart';
-import '../../auth/presentation/auth_providers.dart';
 import '../domain/lost_item.dart';
 import 'item_detail_screen.dart';
 import 'lost_found_providers.dart';

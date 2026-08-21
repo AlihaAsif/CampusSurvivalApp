@@ -64,3 +64,13 @@ final assignmentCountsProvider = Provider<({int done, int total})>((ref) {
   final done = all.where((assignment) => assignment.done).length;
   return (done: done, total: all.length);
 });
+
+
+final upcomingDeadlinesProvider = Provider<List<Assignment>>((ref) {
+  final all = ref.watch(assignmentsProvider).value ?? [];
+
+  final pending = all.where((item) => !item.done).toList()
+    ..sort((a, b) => a.dueAt.compareTo(b.dueAt));
+
+  return pending.take(3).toList();
+});

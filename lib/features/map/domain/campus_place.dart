@@ -30,18 +30,18 @@ extension PlaceCategoryX on PlaceCategory {
   };
 
   int get colorValue => switch (this) {
-    PlaceCategory.academic => 0xFF3D5AA9,
-    PlaceCategory.library => 0xFF725572,
-    PlaceCategory.lab => 0xFF1F6683,
-    PlaceCategory.cafeteria => 0xFF8A5300,
-    PlaceCategory.admin => 0xFF585E71,
-    PlaceCategory.medical => 0xFFBA1A1A,
-    PlaceCategory.mosque => 0xFF256B48,
-    PlaceCategory.sports => 0xFF8A5300,
-    PlaceCategory.parking => 0xFF585E71,
-    PlaceCategory.hostel => 0xFF725572,
-    PlaceCategory.transport => 0xFF1F6683,
-    PlaceCategory.other => 0xFF585E71,
+    PlaceCategory.academic => 0xFF1E2E5C, // Navy
+    PlaceCategory.library => 0xFF3D5AA9,  // Blue
+    PlaceCategory.lab => 0xFFF2691E,      // Orange
+    PlaceCategory.cafeteria => 0xFFF2691E, // Orange
+    PlaceCategory.admin => 0xFF1E2E5C,     // Navy
+    PlaceCategory.medical => 0xFFBA1A1A,   // Medical Red
+    PlaceCategory.mosque => 0xFF1E2E5C,    // Navy
+    PlaceCategory.sports => 0xFFF2691E,    // Orange
+    PlaceCategory.parking => 0xFF3D5AA9,   // Blue
+    PlaceCategory.hostel => 0xFF1E2E5C,    // Navy
+    PlaceCategory.transport => 0xFFF2691E, // Orange
+    PlaceCategory.other => 0xFF3D5AA9,     // Blue
   };
 }
 

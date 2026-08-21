@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'import_timetable_screen.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../domain/class_slot.dart';
@@ -40,6 +40,17 @@ class _TimetableScreenState extends ConsumerState<TimetableScreen> {
       appBar: AppBar(
         title: const Text('Timetable'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.upload_file),
+            tooltip: 'Import timetable',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const ImportTimetableScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.menu_book_outlined),
             tooltip: 'Subjects',

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import 'auth_providers.dart';
 import 'login_screen.dart';
 import 'signup_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   void _open(BuildContext context, Widget screen) {
@@ -16,11 +18,22 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).value;
+    if (user != null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: BrandColors.orange),
+        ),
+      );
+    }
+
     final theme = Theme.of(context);
 
+    const lightOrange = Color(0xFFFA7833);
+
     return Scaffold(
-      backgroundColor: BrandColors.orange,
+      backgroundColor: lightOrange,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -40,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                 'Survive the semester',
                 style: theme.textTheme.headlineSmall?.copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -87,7 +100,7 @@ class WelcomeScreen extends StatelessWidget {
                             _open(context, const SignupScreen()),
                         style: FilledButton.styleFrom(
                           backgroundColor: Colors.white,
-                          foregroundColor: BrandColors.orange,
+                          foregroundColor: lightOrange,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),

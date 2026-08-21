@@ -9,8 +9,8 @@ const ColorScheme lightScheme = ColorScheme(
   primaryContainer: Color(0xFFE8EEF9),
   onPrimaryContainer: Color(0xFF0D1838),
 
-  // Secondary: Brand Orange
-  secondary: Color(0xFFF2691E),
+  // Secondary: Brand Orange (Lighter, warmer shade)
+  secondary: Color(0xFFFA7833),
   onSecondary: Color(0xFFFFFFFF),
   secondaryContainer: Color(0xFFFFF0EB),
   onSecondaryContainer: Color(0xFF5A2000),
@@ -42,7 +42,7 @@ const ColorScheme lightScheme = ColorScheme(
 class BrandColors {
   BrandColors._();
 
-  static const Color orange = Color(0xFFF2691E);
+  static const Color orange = Color(0xFFFA7833);
   static const Color navy = Color(0xFF1E2E5C);
   static const Color blue = Color(0xFF3D5AA9);
 

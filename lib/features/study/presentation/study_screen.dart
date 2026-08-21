@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../timetable/presentation/timetable_providers.dart';
 import '../domain/study_session.dart';
@@ -120,7 +121,7 @@ class StudyScreen extends ConsumerWidget {
                                 vertical: 7,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFDDB3),
+                                color: scheme.secondaryContainer,
                                 borderRadius: BorderRadius.circular(
                                   AppRadius.chip,
                                 ),
@@ -128,17 +129,17 @@ class StudyScreen extends ConsumerWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.local_fire_department,
                                     size: 15,
-                                    color: Color(0xFF2B1700),
+                                    color: scheme.onSecondaryContainer,
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
                                     '$streak day streak',
                                     style: theme.textTheme.labelSmall
                                         ?.copyWith(
-                                      color: const Color(0xFF2B1700),
+                                      color: scheme.onSecondaryContainer,
                                       letterSpacing: 0.2,
                                     ),
                                   ),
@@ -235,7 +236,7 @@ class StudyScreen extends ConsumerWidget {
                                   value: item.fraction,
                                   minHeight: 6,
                                   color: item.behind
-                                      ? const Color(0xFF8A5300)
+                                      ? BrandColors.orange
                                       : Color(item.subject.colorValue),
                                   backgroundColor:
                                   scheme.surfaceContainerHighest,

@@ -43,7 +43,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.card),
           side: BorderSide(
-            color: lightScheme.outlineVariant.withValues(alpha: 0.3),
+            color: BrandColors.orange.withValues(alpha: 0.25),
             width: 1,
           ),
         ),

@@ -1,10 +1,10 @@
 
 const List<int> subjectColors = [
-  0xFF3D5AA9,
-  0xFF256B48,
-  0xFF8A5300,
-  0xFF725572,
-  0xFF1F6683,
+  0xFFF2691E, // Brand Orange
+  0xFF1E2E5C, // Brand Navy Blue
+  0xFF3D5AA9, // Brand Accent Blue
+  0xFFE55A10, // Bright Orange
+  0xFF2B3E75, // Deep Blue
 ];
 
 class Subject {

@@ -11,6 +11,7 @@ import '../../announcements/presentation/announcement_providers.dart';
 import '../../announcements/presentation/announcements_screen.dart';
 import '../../lost_found/presentation/lost_found_screen.dart';
 import '../../map/presentation/campus_map_screen.dart';
+import '../../assistant/presentation/assistant_screen.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -22,6 +23,7 @@ class MoreScreen extends ConsumerWidget {
       'Announcements' => const AnnouncementsScreen(),
       'Lost & Found' => const LostFoundScreen(),
       'Campus Map' => const CampusMapScreen(),
+      'AI Assistant' => const AssistantScreen(),
       _ => PlaceholderScreen(title: title),
     };
 
@@ -58,8 +60,8 @@ class MoreScreen extends ConsumerWidget {
             ? '$unread unread notice${unread == 1 ? '' : 's'}'
             : 'All campus notices in one place',
         icon: Icons.campaign_outlined,
-        background: scheme.tertiaryContainer,
-        foreground: scheme.onTertiaryContainer,
+        background: BrandColors.orange.withValues(alpha: 0.15),
+        foreground: BrandColors.orange,
       ),
       _Feature(
         title: 'Lost & Found',
@@ -93,20 +95,41 @@ class MoreScreen extends ConsumerWidget {
         ),
         children: [
 
-          Card(
-            color: BrandColors.navy,
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [BrandColors.navy, BrandColors.blue],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              boxShadow: [
+                BoxShadow(
+                  color: BrandColors.navy.withValues(alpha: 0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 26,
-                    backgroundColor: BrandColors.orange,
-                    child: Text(
-                      (profile?.name ?? '?').characters.first.toUpperCase(),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
+                      color: BrandColors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: BrandColors.navy,
+                      child: Text(
+                        (profile?.name ?? '?').characters.first.toUpperCase(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -122,13 +145,13 @@ class MoreScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 3),
                         Text(
                           '${profile?.rollNumber ?? ''} · '
                               'Semester ${profile?.semester ?? ''} · '
                               'Section ${profile?.section ?? ''}',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: 0.85),
                           ),
                         ),
                       ],
@@ -141,11 +164,26 @@ class MoreScreen extends ConsumerWidget {
 
           const SizedBox(height: AppSpacing.section),
 
-          Text(
-            'FEATURES',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: scheme.onSurfaceVariant,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 4,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: BrandColors.orange,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 7),
+              Text(
+                'FEATURES',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: AppSpacing.sm),
 
@@ -161,11 +199,26 @@ class MoreScreen extends ConsumerWidget {
 
           const SizedBox(height: AppSpacing.section),
 
-          Text(
-            'ACCOUNT',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: scheme.onSurfaceVariant,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 4,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: BrandColors.orange,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 7),
+              Text(
+                'ACCOUNT',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: AppSpacing.sm),
 
