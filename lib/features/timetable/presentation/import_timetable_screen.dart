@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../profile/presentation/profile_providers.dart';
 import '../domain/class_slot.dart';
@@ -23,7 +24,10 @@ class ImportTimetableScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Import timetable'),
+        title: const Text(
+          'Import timetable',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
@@ -50,7 +54,7 @@ class ImportTimetableScreen extends ConsumerWidget {
 class _IdleView extends ConsumerWidget {
   const _IdleView();
 
-    Future<void> _pickFile(WidgetRef ref) async {
+  Future<void> _pickFile(WidgetRef ref) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
@@ -101,29 +105,42 @@ class _IdleView extends ConsumerWidget {
             vertical: AppSpacing.xxl,
           ),
           decoration: BoxDecoration(
-            color: scheme.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: scheme.outline, width: 1.5),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: BrandColors.orange.withValues(alpha: 0.35),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: BrandColors.navy.withValues(alpha: 0.05),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 56,
+                height: 56,
                 decoration: BoxDecoration(
-                  color: scheme.primaryContainer,
+                  color: BrandColors.orange.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.upload_file,
-                  size: 22,
-                  color: scheme.onPrimaryContainer,
+                child: const Icon(
+                  Icons.cloud_upload_rounded,
+                  size: 28,
+                  color: BrandColors.orange,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
                 'Import your timetable',
-                style: theme.textTheme.titleMedium,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: BrandColors.navy,
+                ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
@@ -140,20 +157,39 @@ class _IdleView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: SizedBox(
-                      height: 46,
-                      child: FilledButton(
+                      height: 48,
+                      child: FilledButton.icon(
                         onPressed: () => _pickFile(ref),
-                        child: const Text('Choose file'),
+                        icon: const Icon(Icons.folder_open_rounded, size: 18),
+                        label: const Text('Choose file'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: BrandColors.orange,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: SizedBox(
-                      height: 46,
-                      child: OutlinedButton(
+                      height: 48,
+                      child: OutlinedButton.icon(
                         onPressed: () => _takePhoto(ref),
-                        child: const Text('Take photo'),
+                        icon: const Icon(Icons.camera_alt_outlined, size: 18),
+                        label: const Text('Take photo'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: BrandColors.navy,
+                          side: const BorderSide(
+                            color: BrandColors.navy,
+                            width: 1.5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -166,17 +202,38 @@ class _IdleView extends ConsumerWidget {
         const SizedBox(height: AppSpacing.lg),
 
         Card(
-          color: scheme.surfaceContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.card),
+            side: BorderSide(
+              color: BrandColors.orange.withValues(alpha: 0.25),
+              width: 1,
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.cardPad),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'FOR BEST RESULTS',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: BrandColors.orange,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'FOR BEST RESULTS',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: BrandColors.navy,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 ...[
@@ -189,10 +246,11 @@ class _IdleView extends ConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           '· ',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
+                          style: TextStyle(
+                            color: BrandColors.orange,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Expanded(

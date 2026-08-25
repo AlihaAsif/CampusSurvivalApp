@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../domain/announcement.dart';
 import 'announcement_providers.dart';
@@ -28,9 +29,16 @@ class _AnnouncementsScreenState
     final filter = ref.watch(announcementFilterProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Announcements')),
+      appBar: AppBar(
+        title: const Text(
+          'Announcements',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: async.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: BrandColors.orange),
+        ),
         error: (error, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -59,9 +67,24 @@ class _AnnouncementsScreenState
                       const SizedBox(width: AppSpacing.sm),
                   itemBuilder: (context, index) {
                     final value = AnnouncementFilter.values[index];
+                    final isSelected = filter == value;
                     return ChoiceChip(
-                      label: Text(_label(value)),
-                      selected: filter == value,
+                      label: Text(
+                        _label(value),
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : BrandColors.navy,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.w500,
+                        ),
+                      ),
+                      selected: isSelected,
+                      selectedColor: BrandColors.orange,
+                      backgroundColor: Colors.white,
+                      side: BorderSide(
+                        color: isSelected
+                            ? BrandColors.orange
+                            : BrandColors.orange.withValues(alpha: 0.3),
+                      ),
                       onSelected: (_) {
                         ref
                             .read(announcementFilterProvider.notifier)
@@ -78,7 +101,7 @@ class _AnnouncementsScreenState
                     : ListView.builder(
                   padding: const EdgeInsets.fromLTRB(
                     AppSpacing.screenH,
-                    0,
+                    AppSpacing.xs,
                     AppSpacing.screenH,
                     AppSpacing.xxl,
                   ),
@@ -150,13 +173,26 @@ class _AnnouncementsScreenState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.campaign_outlined,
-              size: 40,
-              color: scheme.onSurfaceVariant,
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              decoration: BoxDecoration(
+                color: BrandColors.orange.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.campaign_outlined,
+                size: 40,
+                color: BrandColors.orange,
+              ),
             ),
             const SizedBox(height: AppSpacing.md),
-            Text(title, style: theme.textTheme.titleMedium),
+            Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: BrandColors.navy,
+              ),
+            ),
             const SizedBox(height: AppSpacing.xs),
             Text(
               message,
@@ -193,6 +229,15 @@ class _AnnouncementCard extends StatelessWidget {
     final scheme = theme.colorScheme;
 
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        side: BorderSide(
+          color: announcement.pinned
+              ? BrandColors.orange.withValues(alpha: 0.5)
+              : BrandColors.orange.withValues(alpha: 0.2),
+          width: announcement.pinned ? 1.5 : 1.0,
+        ),
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.card),
         onTap: onTap,
@@ -202,22 +247,22 @@ class _AnnouncementCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
                   color: announcement.pinned
-                      ? scheme.tertiaryContainer
-                      : scheme.surfaceContainerHigh,
+                      ? BrandColors.orange.withValues(alpha: 0.15)
+                      : BrandColors.navy.withValues(alpha: 0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   announcement.pinned
-                      ? Icons.push_pin_outlined
+                      ? Icons.push_pin_rounded
                       : Icons.campaign_outlined,
-                  size: 18,
+                  size: 19,
                   color: announcement.pinned
-                      ? scheme.onTertiaryContainer
-                      : scheme.onSurfaceVariant,
+                      ? BrandColors.orange
+                      : BrandColors.navy,
                 ),
               ),
 
@@ -233,8 +278,8 @@ class _AnnouncementCard extends StatelessWidget {
                           child: Text(
                             announcement.source,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w500,
+                              color: BrandColors.navy,
+                              fontWeight: FontWeight.bold,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -242,10 +287,10 @@ class _AnnouncementCard extends StatelessWidget {
                         if (isUnread) ...[
                           const SizedBox(width: AppSpacing.sm),
                           Container(
-                            width: 7,
-                            height: 7,
-                            decoration: BoxDecoration(
-                              color: scheme.primary,
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: BrandColors.orange,
                               shape: BoxShape.circle,
                             ),
                           ),

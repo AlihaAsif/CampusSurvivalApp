@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../timetable/presentation/timetable_providers.dart';
 import '../domain/study_session.dart';
@@ -101,8 +102,28 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
       _subjectId = null;
     }
 
+    final inputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(14),
+      borderSide: BorderSide(
+        color: BrandColors.orange.withValues(alpha: 0.3),
+      ),
+    );
+
+    final focusedBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(14),
+      borderSide: const BorderSide(
+        color: BrandColors.orange,
+        width: 2.0,
+      ),
+    );
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Plan session')),
+      appBar: AppBar(
+        title: const Text(
+          'Plan session',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: subjects.isEmpty
           ? Center(
         child: Padding(
@@ -124,10 +145,12 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
             TextFormField(
               controller: _titleController,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'What will you study?',
                 hintText: 'Trees and BST traversals',
-                border: OutlineInputBorder(),
+                border: inputBorder,
+                enabledBorder: inputBorder,
+                focusedBorder: focusedBorder,
               ),
               validator: (value) {
                 if ((value ?? '').trim().isEmpty) {
@@ -142,9 +165,11 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
             DropdownButtonFormField<String>(
               value: _subjectId,
               isExpanded: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Subject',
-                border: OutlineInputBorder(),
+                border: inputBorder,
+                enabledBorder: inputBorder,
+                focusedBorder: focusedBorder,
               ),
               items: subjects.map((subject) {
                 return DropdownMenuItem(
@@ -181,15 +206,20 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: _pickDate,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(14),
                     child: InputDecorator(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Date',
-                        border: OutlineInputBorder(),
+                        border: inputBorder,
+                        enabledBorder: inputBorder,
+                        focusedBorder: focusedBorder,
                       ),
                       child: Text(
                         '${_date.day}/${_date.month}',
-                        style: theme.textTheme.bodyLarge,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: BrandColors.navy,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -198,15 +228,20 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: _pickTime,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(14),
                     child: InputDecorator(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Starts',
-                        border: OutlineInputBorder(),
+                        border: inputBorder,
+                        enabledBorder: inputBorder,
+                        focusedBorder: focusedBorder,
                       ),
                       child: Text(
                         _time.format(context),
-                        style: theme.textTheme.bodyLarge,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: BrandColors.navy,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -219,13 +254,15 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
             Text(
               'How long?',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
+                color: BrandColors.navy,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Wrap(
               spacing: AppSpacing.sm,
               children: [30, 60, 90, 120, 180].map((minutes) {
+                final isSelected = _duration == minutes;
                 return ChoiceChip(
                   label: Text(
                     minutes < 60
@@ -233,8 +270,20 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
                         : '${minutes ~/ 60} hr'
                         '${minutes >= 120 ? 's' : ''}'
                         '${minutes % 60 == 30 ? ' 30' : ''}',
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : BrandColors.navy,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.w500,
+                    ),
                   ),
-                  selected: _duration == minutes,
+                  selected: isSelected,
+                  selectedColor: BrandColors.orange,
+                  backgroundColor: Colors.white,
+                  side: BorderSide(
+                    color: isSelected
+                        ? BrandColors.orange
+                        : BrandColors.orange.withValues(alpha: 0.3),
+                  ),
                   onSelected: (_) =>
                       setState(() => _duration = minutes),
                 );
@@ -265,12 +314,26 @@ class _AddSessionScreenState extends ConsumerState<AddSessionScreen> {
               height: 52,
               child: FilledButton(
                 onPressed: _saving ? null : _save,
+                style: FilledButton.styleFrom(
+                  backgroundColor: BrandColors.orange,
+                  foregroundColor: Colors.white,
+                  elevation: 2,
+                  shadowColor: BrandColors.orange.withValues(alpha: 0.4),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 child: _saving
                     ? const SizedBox(
                   height: 20,
                   width: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
+                    color: Colors.white,
                   ),
                 )
                     : const Text('Save session'),
